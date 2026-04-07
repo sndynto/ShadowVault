@@ -1,65 +1,158 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
+import { motion } from "framer-motion";
+import { Lock, Shield, Eye, Zap } from "lucide-react";
+import { DirectConnectButton } from "@/components/wallet/direct-connect-button";
 
 export default function Home() {
+  const router = useRouter();
+  const { isConnected } = useAccount();
+
+  useEffect(() => {
+    if (isConnected) {
+      router.push("/dashboard");
+    }
+  }, [isConnected, router]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-black overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Gradient Orbs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "4s" }} />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Navbar */}
+        <nav className="flex items-center justify-between px-6 py-6 backdrop-blur-md">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center gap-2"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <Lock className="w-8 h-8 text-purple-400" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              ShadowVault
+            </h1>
+          </motion.div>
+          
+          <DirectConnectButton />
+        </nav>
+
+        {/* Hero Section */}
+        <div className="container mx-auto px-6 pt-20 pb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
           >
-            Documentation
-          </a>
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 mb-8"
+            >
+              <Zap className="w-4 h-4 text-purple-400" />
+              <span className="text-sm text-purple-200">Powered by Fhenix FHE</span>
+            </motion.div>
+
+            {/* Main Headline */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-6xl md:text-7xl font-bold mb-6 leading-tight"
+            >
+              <span className="text-white">Track Your Wealth</span>
+              <br />
+              <span className="bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                Without Revealing It
+              </span>
+            </motion.h2>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto"
+            >
+              ShadowVault is a private portfolio tracker powered by Fhenix&apos;s FHE. See your total assets and prove your wealth tier without revealing your actual balance.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex justify-center"
+            >
+              <DirectConnectButton />
+            </motion.div>
+          </motion.div>
+
+          {/* Features Grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="grid md:grid-cols-3 gap-8 mt-24"
+          >
+            {[
+              {
+                icon: Shield,
+                title: "Private & Verified",
+                description:
+                  "Prove your portfolio tier without revealing balances.",
+              },
+              {
+                icon: Eye,
+                title: "Encrypted Data",
+                description:
+                  "All data encrypted on-chain with Fhenix FHE operations.",
+              },
+              {
+                icon: Lock,
+                title: "Full Control",
+                description:
+                  "Only you can decrypt your data. Toggle reveal mode on demand.",
+              },
+            ].map((feature, idx) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + idx * 0.1 }}
+                  className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-purple-500/50 transition-all duration-300"
+                >
+                  <Icon className="w-12 h-12 text-purple-400 mb-4 group-hover:text-cyan-400 transition-colors" />
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-slate-400">{feature.description}</p>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
-      </main>
+
+        {/* Footer */}
+        <div className="container mx-auto px-6 pb-12 border-t border-white/10">
+          <div className="py-8 text-center text-sm text-slate-500">
+            <p>🔐 ShadowVault © 2026 | Powered by Fhenix Testnet</p>
+          <p className="mt-2">Built by sndynto.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
